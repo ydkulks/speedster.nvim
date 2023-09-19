@@ -6,6 +6,18 @@ M.setup = function ()
 	-- print(vim.o.ft)
 end
 
+local function set_mappings()
+	local mappings = {
+		q = 'vim.cmd(":close")'
+	}
+
+	for k,v in pairs(mappings) do
+		api.nvim_buf_set_keymap(buf,'n',k,':lua '..v..'<cr>',{
+			nowait = true, noremap = true, silent =true
+		})
+	end
+end
+
 local function center(str)
 	local width = api.nvim_win_get_width(0)
 	local shift = math.floor(width / 2) - math.floor(string.len(str) / 2)
@@ -70,6 +82,7 @@ end
 
 M.run = function ()
 	open_window()
+	set_mappings()
 	get_data()
 end
 
