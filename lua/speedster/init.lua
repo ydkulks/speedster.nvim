@@ -71,19 +71,28 @@ local function get_data()
 		' q - Quit',
 		hr('─'),
 		test,
-		'',''
+		'','> '
 	})
 	-- Highlighting lines
 	api.nvim_buf_add_highlight(buf,-1,'String',0,0,-1)
 	api.nvim_buf_add_highlight(buf,-1,'VertSplit',2,0,-1)
 	api.nvim_buf_add_highlight(buf,-1,'Pmenu',3,0,-1)
-	api.nvim_win_set_cursor(0,{6,0})
+	api.nvim_win_set_cursor(0,{6,2})
+end
+
+local function read_buffer()
+	local lnum = 6
+	local buffer_line = api.nvim_buf_get_lines(buf,lnum-1,lnum,false)[1]
+	print(buffer_line)
 end
 
 M.run = function ()
 	open_window()
 	set_mappings()
 	get_data()
+	-- Go to insert mode after loading window
+	api.nvim_feedkeys('a','n',true)
+	read_buffer()
 end
 
 return M
