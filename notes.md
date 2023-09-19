@@ -1,14 +1,28 @@
 # Notes
 
+## 🧠 Resources
+
+- [TJ De Vries](https://www.youtube.com/watch?v=n4Lp4cV8YR0)
+- [nvim-lua-guide](https://github.com/nanotee/nvim-lua-guide/tree/master)
+- [Lua UI (basics)](https://dev.to/2nit/how-to-write-neovim-plugins-in-lua-5cca)
+- [Lua UI](https://www.2n.pl/blog/how-to-make-ui-for-neovim-plugins-in-lua)
+
 ## ⚠️ Help commands
 
 Help commands to refer while building a plugin
 
 ```vim
+:Telescope help_tags
+:Telescope highlights
 :help 'runtimepath'
 :help help-writing
 :help modeline
 :help right
+:lua vim.print(vim.api)
+:help nvim_open_win()
+:help nvim_create_buf()
+:help nvim_buf_set_option()
+:help nvim_get_option()
 ```
 
 ## Special files and folders
