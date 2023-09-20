@@ -1,20 +1,42 @@
 local api = vim.api
-local buf
+local buf,input_buf
+local start_msg
 local M = {}
 
-M.setup = function ()
-	-- print(vim.o.ft)
+local function read()
+	local lnum = 1
+	local buffer_line = api.nvim_buf_get_lines(input_buf,lnum-1,lnum,false)[1]
+	api.nvim_buf_set_lines(buf, 0, -1, false, {
+		buffer_line,
+		'Started'
+	})
 end
 
 local function set_mappings()
-	local mappings = {
-		q = 'vim.cmd(":close")'
+	local buf_list = {buf,input_buf}
+	local nmappings = {
+		q = 'vim.cmd(":close");vim.cmd(":close")'
 	}
 
-	for k,v in pairs(mappings) do
-		api.nvim_buf_set_keymap(buf,'n',k,':lua '..v..'<cr>',{
+	--[[
+	local imappings = {
+		['<cr>'] = print("hi")
+	}
+
+	-- Loop through all buffers and map keys for each
+	for k,v in pairs(imappings) do
+		api.nvim_buf_set_keymap(input_buf,'i',k,':lua '..v()..'<cr>',{
 			nowait = true, noremap = true, silent =true
 		})
+	end
+	]]--
+	-- Normal mode mappings
+	for _,bv in pairs(buf_list)do
+		for k,v in pairs(nmappings) do
+			api.nvim_buf_set_keymap(bv,'n',k,':lua '..v..'<cr>',{
+				nowait = true, noremap = true, silent =true
+			})
+		end
 	end
 end
 
@@ -53,7 +75,7 @@ local function open_window()
   local opts = {
     style = "minimal",
 	  border = "rounded",
-    relative = "editor",
+    relative = "win",
     width = win_width,
     height = win_height,
     row = row,
@@ -65,34 +87,55 @@ local function open_window()
 end
 
 local function get_data()
-	local test = 'Typing test 101!'
+	-- local start_msg = center('Type "start" to begin')
+	start_msg = center('Type "start" to begin')
 	api.nvim_buf_set_lines(buf, 0, -1, false, {
 		center('Speedster'),
 		' q - Quit',
 		hr('─'),
-		test,
-		'','> '
+		start_msg
 	})
 	-- Highlighting lines
-	api.nvim_buf_add_highlight(buf,-1,'String',0,0,-1)
-	api.nvim_buf_add_highlight(buf,-1,'VertSplit',2,0,-1)
-	api.nvim_buf_add_highlight(buf,-1,'Pmenu',3,0,-1)
-	api.nvim_win_set_cursor(0,{6,2})
+	api.nvim_buf_add_highlight(buf,-1,'Keyword',0,0,-1)
+	api.nvim_buf_add_highlight(buf,-1,'Comment',2,0,-1)
+	api.nvim_buf_add_highlight(buf,-1,'Function',3,0,-1)
 end
 
-local function read_buffer()
-	local lnum = 6
-	local buffer_line = api.nvim_buf_get_lines(buf,lnum-1,lnum,false)[1]
-	print(buffer_line)
+
+local function input_field()
+	input_buf = api.nvim_create_buf(false,true)
+	-- Window dimensions
+  local width = api.nvim_get_option("columns")
+  local height = api.nvim_get_option("lines")
+	-- Window position
+  local win_width = math.ceil(width * 0.8)
+	local input_win_opts = {
+		style = "minimal",
+	  border = "rounded",
+		relative = "editor",
+		width = win_width,
+		height = 1,
+		row = math.ceil((height) / 3 ) + 12,
+		col = math.ceil((width - win_width) / 2),
+	}
+
+	local input_win = api.nvim_open_win(input_buf,true,input_win_opts)
+	api.nvim_set_current_win(input_win)
+	vim.cmd('startinsert')
+
+	-- Calling other functions
+	-- read_buffer()
+	set_mappings()
 end
 
 M.run = function ()
 	open_window()
-	set_mappings()
+	get_data()
+	input_field()
 	get_data()
 	-- Go to insert mode after loading window
-	api.nvim_feedkeys('a','n',true)
-	read_buffer()
+	-- api.nvim_feedkeys('a','n',true)
+	-- read_buffer()
 end
 
 return M
