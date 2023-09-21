@@ -16,6 +16,7 @@ Help commands to refer while building a plugin
 :Telescope highlights
 :help 'runtimepath'
 :help help-writing
+:help helptags
 :help modeline
 :help right
 :lua vim.print(vim.api)
@@ -23,6 +24,7 @@ Help commands to refer while building a plugin
 :help nvim_create_buf()
 :help nvim_buf_set_option()
 :help nvim_get_option()
+:help prompt_setcallback()
 ```
 
 ## Special files and folders

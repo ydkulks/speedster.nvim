@@ -1,6 +1,19 @@
 ==============================================================================
+				SPEEDSTER.NVIM
 							      *speedster.nvim*
 
-This is a plugin
+|speedster.nvim| helps you to warm up, practice and improve your typing speed.
+
+==============================================================================
+
+								       *run()*
+|run()| runs the plugin.
+>
+  require("speedster").run()
+<
+Or, you can also use vim command in the command-mode
+>
+  :Speedster
+<
 
  vim:tw=78:ts=8:ft=help:norl:
