@@ -61,7 +61,21 @@ return 5
 ```
 
 Essentially what it does is every time it runs, the value of `return` is
-saved as **cache**
+saved as **cache** in a global table, which can be accessed with:
+
+```lua
+:lua vim.print(package.loaded)
+```
 
 It is counter intuitive, because it actually does not run multiple time,
-it runs one time and save the value in cache for later use.
+it runs one time and save the value in cache for later use. This is done
+to save time.
+
+If you really want to re-run the plugin to get updated value, assign the
+value of the plugin to `nil` and re-run the plugin to assign updated value
+into the package table like so:
+
+```lua
+:lua vim.print(package.loaded.plugin_name)=nil
+:lua require("plugin_name")
+```

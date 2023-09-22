@@ -2,7 +2,37 @@ local api = vim.api
 local cmd = vim.cmd
 local fn = vim.fn
 local buf,input_buf
+local menu = ' g? - help'
+table.unpack = table.unpack or unpack
+-- Refer this github issue for more info on above line
+-- https://github.com/hrsh7th/nvim-cmp/issues/1017#issuecomment-1141440976
+local wordlist = {
+	  "apple", "banana", "cherry", "orange", "grape",
+    "elephant", "giraffe", "zebra", "tiger", "lion",
+    "house", "car", "tree", "flower", "mountain"
+}
+local randomWords = {}
 local M = {}
+
+local function generateRandomWords()
+  math.randomseed(os.time())
+  local words = {}
+  local randomString = ""
+	local maxLength = 10
+
+  while #randomString < maxLength do
+    local randomIndex = math.random(1, #wordlist)
+    local randomWord = wordlist[randomIndex]
+    if #randomString + #randomWord + 1 <= maxLength then
+      words[#words + 1] = randomWord
+      randomString = table.concat(words, " ")
+    else
+      break
+    end
+  end
+
+  return randomString
+end
 
 local function set_mappings()
 	local buf_list = {buf,input_buf}
@@ -55,30 +85,42 @@ local function open_window()
   api.nvim_open_win(buf, true, opts)
 end
 
-local function get_data(menu,message)
+local function get_data(message)
 	-- Horizontal line
 	local function hr(char)
 		local width = api.nvim_win_get_width(0)
 		return string.rep(char,width)
 	end
 	-- Center the text
-	local function center(str)
-		local width = api.nvim_win_get_width(0)
-		local shift = math.floor(width / 2) - math.floor(string.len(str) / 2)
-		return string.rep(' ',shift) .. str
+	local function center(contents)
+    local width = api.nvim_win_get_width(0)
+    local centeredContents = {}
+    for _, str in ipairs(contents) do
+        local shift = math.floor(width / 2) - math.floor(string.len(str) / 2)
+        local centeredStr = string.rep(' ', shift) .. str
+        table.insert(centeredContents, centeredStr)
+    end
+
+    return centeredContents
 	end
 
+	local title = {'Speedster'}
 	api.nvim_buf_set_lines(buf, 0, -1, false, {
-		center('Speedster'),
+		table.unpack(center(title)),
 		menu,
 		hr('─'),
-		'','',
-		center(message)
+		'',
+		table.unpack(center(message))
 	})
 	-- Highlighting lines
 	api.nvim_buf_add_highlight(buf,-1,'Keyword',0,0,-1)
 	api.nvim_buf_add_highlight(buf,-1,'Comment',2,0,-1)
-	-- api.nvim_buf_add_highlight(buf,-1,'Function',3,0,-1)
+
+	api.nvim_buf_add_highlight(buf,-1,'Function',4,0,-1)
+	api.nvim_buf_add_highlight(buf,-1,'Function',5,0,-1)
+	api.nvim_buf_add_highlight(buf,-1,'Function',6,0,-1)
+	api.nvim_buf_add_highlight(buf,-1,'Function',7,0,-1)
+	api.nvim_buf_add_highlight(buf,-1,'Function',8,0,-1)
 end
 
 local function input_field()
@@ -98,36 +140,46 @@ local function input_field()
 		col = math.ceil((width - win_width) / 2),
 	}
 
+	-- Create prompt window
 	local input_win = api.nvim_open_win(input_buf,true,input_win_opts)
 	api.nvim_set_current_win(input_win)
 	api.nvim_buf_set_option(input_buf, "buftype", "prompt")
+	-- Callback function in response to input
 	fn.prompt_setcallback(input_buf, function (input)
-		if input == 'start' or input == 'Start' then
-			-- cmd('stopinsert')
-			local menu = 'g? - help'
-			local message = 'Stop, get some help'
-			get_data(menu,message)
+		-- Condition to start, get help, quit
+		if input == 's' then
+			randomWords = {}
+			local randomWord = generateRandomWords()
+			table.insert(randomWords,randomWord)
+			local message = randomWords
+			return get_data(message)
 		elseif input == 'g?' then
-			local menu = 'g? - help'
-			-- May be converting this message string variable to 
-			-- a table might help to itirate through bunch of line
-			-- to add in the buffer
-			local message = "start : Start  q : Quit  g? : help"
-			get_data(menu,message)
+			local message = {
+				"[s]  : start",
+				"[q]  :  quit",
+				"[g?] :  help"
+			}
+			return get_data(message)
 		elseif input == 'q' then
 			cmd(":close")
 			cmd(":close")
+		elseif input == randomWords[1] then
+			randomWords = {}
+			local randomWord = generateRandomWords()
+			table.insert(randomWords,randomWord)
+			local message = randomWords
+			return get_data(message)
 		end
 	end)
-	fn.prompt_setprompt(input_buf,"》")
+	-- fn.prompt_setprompt(input_buf,"》")
+	fn.prompt_setprompt(input_buf," ▶ ")
 	cmd('startinsert')
 end
 
 M.run = function ()
-	local menu = 'g? - help'
-	local start_msg = 'Type "start" to begin'
+	local start_msg = {'Type "s" to start'}
 	open_window()
-	get_data(menu,start_msg)
+	get_data(start_msg)
 	input_field()
 	set_mappings()
 end
