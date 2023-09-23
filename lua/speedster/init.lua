@@ -1,3 +1,4 @@
+-- TODO: impliment os.clock() and intigrate symbols
 local api = vim.api
 local cmd = vim.cmd
 local fn = vim.fn
@@ -6,23 +7,61 @@ local menu = ' g? - help'
 table.unpack = table.unpack or unpack
 -- Refer this github issue for more info on above line
 -- https://github.com/hrsh7th/nvim-cmp/issues/1017#issuecomment-1141440976
-local wordlist = {
-	  "apple", "banana", "cherry", "orange", "grape",
-    "elephant", "giraffe", "zebra", "tiger", "lion",
-    "house", "car", "tree", "flower", "mountain"
-}
+local filepath = "./wordlist.txt"
 local randomWords = {}
 local M = {}
 
+local function wordsWithSymbols(line)
+	return line
+end
+
+local function getWords(randomIndex, file)
+  local i = 1
+  local lines = {}  -- Store lines in a table for easier access
+
+  for line in io.lines(file) do
+    -- lines[i] = line:sub(1,-2)
+    lines[i] = line
+    i = i + 1
+  end
+
+  -- Check if the randomIndex is valid
+  if randomIndex >= 1 and randomIndex <= i - 1 then
+    -- Get the line at the randomIndex
+    local currentLine = lines[randomIndex]
+
+    -- Check if the line is empty (contains no characters)
+    if #currentLine > 0 then
+      -- return currentLine
+			return wordsWithSymbols(currentLine)
+    else
+      -- If the line is empty, look for the previous line (-1) and the next line (+1)
+      local previousLine = lines[randomIndex - 1]
+      local nextLine = lines[randomIndex + 1]
+
+      -- Return the previous line if it has characters, otherwise return the next line
+      if previousLine and #previousLine > 0 then
+        return previousLine
+      elseif nextLine and #nextLine > 0 then
+        return nextLine
+      end
+    end
+  end
+end
 local function generateRandomWords()
   math.randomseed(os.time())
   local words = {}
   local randomString = ""
-	local maxLength = 10
+	local maxLength = 80
 
   while #randomString < maxLength do
-    local randomIndex = math.random(1, #wordlist)
-    local randomWord = wordlist[randomIndex]
+    -- local randomIndex = math.random(1, #symbols)
+    -- local randomWord = symbols[randomIndex]
+    local randomIndex = math.random(1, 10000)
+		local randomWord = getWords(randomIndex,filepath)
+
+		-- Check the length of line to decide to weather to add the word to the
+		-- table or not
     if #randomString + #randomWord + 1 <= maxLength then
       words[#words + 1] = randomWord
       randomString = table.concat(words, " ")

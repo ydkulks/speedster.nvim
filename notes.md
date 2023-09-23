@@ -6,6 +6,7 @@
 - [nvim-lua-guide](https://github.com/nanotee/nvim-lua-guide/tree/master)
 - [Lua UI (basics)](https://dev.to/2nit/how-to-write-neovim-plugins-in-lua-5cca)
 - [Lua UI](https://www.2n.pl/blog/how-to-make-ui-for-neovim-plugins-in-lua)
+- [10000 English words by MIT](https://www.mit.edu/~ecprice/wordlist.10000)
 
 ## ⚠️ Help commands
 
