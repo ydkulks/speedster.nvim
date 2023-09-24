@@ -26,6 +26,7 @@ Help commands to refer while building a plugin
 :help nvim_buf_set_option()
 :help nvim_get_option()
 :help prompt_setcallback()
+:help plenary-test
 ```
 
 ## Special files and folders
@@ -79,4 +80,16 @@ into the package table like so:
 ```lua
 :lua vim.print(package.loaded.plugin_name)=nil
 :lua require("plugin_name")
+```
+
+## Testing in Lua using Plenary.nvim
+
+1. Create a folder to store testing files in the root of your directory.
+2. Create a file with `_spec.lua`, so that Plenary can recognize that it is a
+testing file
+3. Make sure you have mapped `<Plug>PlenaryTestFile` to a key to run the file
+
+```bash
+mkdir test
+touch test/plugin_name_spec.lua
 ```

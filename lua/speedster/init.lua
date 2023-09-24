@@ -1,4 +1,4 @@
--- TODO: impliment os.clock() and intigrate symbols
+-- TODO: impliment os.clock() and disable coc-pairs like plugins in input_buf
 local api = vim.api
 local cmd = vim.cmd
 local fn = vim.fn
@@ -7,12 +7,48 @@ local menu = ' g? - help'
 table.unpack = table.unpack or unpack
 -- Refer this github issue for more info on above line
 -- https://github.com/hrsh7th/nvim-cmp/issues/1017#issuecomment-1141440976
-local filepath = "./wordlist.txt"
+local filepath = "/home/yd/Projects/speedster.nvim/lua/speedster/wordlist.txt" or "./wordlist.txt"
+-- local filepath = "./wordlist.txt"
+
+--test
+local f = assert(io.open(filepath,'r'))
+f:close()
+
 local randomWords = {}
 local M = {}
+local symbols = '12345678901234567890_+-=;:,./"?><[]{}'
 
-local function wordsWithSymbols(line)
-	return line
+local function wordsWithSymbols(randomWord)
+	-- Extract the string from the table
+  local inputString = randomWord
+
+  -- Split the string into words
+  local words = {}
+  for word in inputString:gmatch("%S+") do
+      table.insert(words, word)
+  end
+
+  -- Select a random index for the word to be replaced
+  local randomIndex = math.random(1, #words)
+
+  -- Get the selected word and its length
+  local selectedWord = words[randomIndex]
+  local wordLength = #selectedWord
+
+  -- Generate a random symbol from the set for each character in the word
+  local symbolString = ''
+  for i = 1, wordLength do
+    local randomSymbolIndex = math.random(1, #symbols)
+    local randomSymbol = symbols:sub(randomSymbolIndex, randomSymbolIndex)
+    symbolString = symbolString .. randomSymbol
+  end
+
+  -- Replace the selected word with the generated symbols
+  words[randomIndex] = symbolString
+
+  -- Reconstruct the modified string
+  local modifiedString = table.concat(words, ' ')
+	return modifiedString
 end
 
 local function getWords(randomIndex, file)
@@ -32,8 +68,7 @@ local function getWords(randomIndex, file)
 
     -- Check if the line is empty (contains no characters)
     if #currentLine > 0 then
-      -- return currentLine
-			return wordsWithSymbols(currentLine)
+      return currentLine
     else
       -- If the line is empty, look for the previous line (-1) and the next line (+1)
       local previousLine = lines[randomIndex - 1]
@@ -48,11 +83,12 @@ local function getWords(randomIndex, file)
     end
   end
 end
+
 local function generateRandomWords()
   math.randomseed(os.time())
   local words = {}
   local randomString = ""
-	local maxLength = 80
+	local maxLength = 50
 
   while #randomString < maxLength do
     -- local randomIndex = math.random(1, #symbols)
@@ -189,9 +225,9 @@ local function input_field()
 		if input == 's' then
 			randomWords = {}
 			local randomWord = generateRandomWords()
+			randomWord = wordsWithSymbols(randomWord)
 			table.insert(randomWords,randomWord)
-			local message = randomWords
-			return get_data(message)
+			return get_data(randomWords)
 		elseif input == 'g?' then
 			local message = {
 				"[s]  : start",
@@ -204,15 +240,21 @@ local function input_field()
 			cmd(":close")
 		elseif input == randomWords[1] then
 			randomWords = {}
+			-- Generate random set of words to form a line
 			local randomWord = generateRandomWords()
+			-- Replace word with symbols
+			randomWord = wordsWithSymbols(randomWord)
 			table.insert(randomWords,randomWord)
-			local message = randomWords
-			return get_data(message)
+			return get_data(randomWords)
 		end
 	end)
 	-- fn.prompt_setprompt(input_buf,"》")
 	fn.prompt_setprompt(input_buf," ▶ ")
 	cmd('startinsert')
+end
+
+local function disable_plugins(buffer)
+	api.nvim_buf_set_var(buffer,'loaded_matchparen',1)
 end
 
 M.run = function ()
@@ -221,6 +263,7 @@ M.run = function ()
 	get_data(start_msg)
 	input_field()
 	set_mappings()
+	disable_plugins(input_buf)
 end
 
 return M
