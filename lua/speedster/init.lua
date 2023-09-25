@@ -113,7 +113,7 @@ end
 local function set_mappings()
 	local buf_list = {buf,input_buf}
 	local nmappings = {
-		q = 'vim.cmd(":close");vim.cmd(":close")'
+		q = 'vim.cmd(":q!");vim.cmd(":close")'
 	}
 
 	-- Normal mode mappings
@@ -250,7 +250,7 @@ local function input_field()
 			return get_data(message)
 		elseif input == 'q' then
 		  end_time = 0
-			cmd(":close")
+			cmd(":q!")
 			cmd(":close")
 		elseif input == randomWords[1] then
 			local time_diff = calculate_time_diff()
