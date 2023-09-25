@@ -1,14 +1,15 @@
--- TODO: impliment os.clock() and disable coc-pairs like plugins in input_buf
+-- TODO: disable coc-pairs like plugins in input_buf
 local api = vim.api
 local cmd = vim.cmd
 local fn = vim.fn
 local buf,input_buf
 local menu = ' g? - help'
+local start_time,end_time
 table.unpack = table.unpack or unpack
 -- Refer this github issue for more info on above line
 -- https://github.com/hrsh7th/nvim-cmp/issues/1017#issuecomment-1141440976
-local filepath = "/home/yd/Projects/speedster.nvim/lua/speedster/wordlist.txt" or "./wordlist.txt"
--- local filepath = "./wordlist.txt"
+local cwd = fn.getcwd()
+local filepath = cwd .. "/lua/speedster/wordlist.txt"
 
 --test
 local f = assert(io.open(filepath,'r'))
@@ -199,6 +200,17 @@ local function get_data(message)
 end
 
 local function input_field()
+	start_time = 0
+	local function calculate_time_diff()
+		end_time = vim.loop.hrtime()
+		local diff_seconds = (end_time - start_time)/1e9
+		start_time = end_time
+
+		-- Formatting
+		local time_taken = string.format("%.6f", diff_seconds)
+
+		return time_taken
+	end
 	input_buf = api.nvim_create_buf(false,true)
 	-- Window dimensions
   local width = api.nvim_get_option("columns")
@@ -223,6 +235,7 @@ local function input_field()
 	fn.prompt_setcallback(input_buf, function (input)
 		-- Condition to start, get help, quit
 		if input == 's' then
+			calculate_time_diff()
 			randomWords = {}
 			local randomWord = generateRandomWords()
 			randomWord = wordsWithSymbols(randomWord)
@@ -236,9 +249,13 @@ local function input_field()
 			}
 			return get_data(message)
 		elseif input == 'q' then
+		  end_time = 0
 			cmd(":close")
 			cmd(":close")
 		elseif input == randomWords[1] then
+			local time_diff = calculate_time_diff()
+			menu = " g? - help" .. " Time: " .. time_diff
+			-- refresh memory
 			randomWords = {}
 			-- Generate random set of words to form a line
 			local randomWord = generateRandomWords()
