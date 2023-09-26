@@ -1,4 +1,4 @@
--- TODO: disable coc-pairs like plugins in input_buf
+-- TODO: Align time to right and clear menu's variable to not display time on open, when running twice in same buffer
 local api = vim.api
 local cmd = vim.cmd
 local fn = vim.fn
@@ -8,8 +8,8 @@ local start_time,end_time
 table.unpack = table.unpack or unpack
 -- Refer this github issue for more info on above line
 -- https://github.com/hrsh7th/nvim-cmp/issues/1017#issuecomment-1141440976
-local cwd = fn.getcwd()
-local filepath = cwd .. "/lua/speedster/wordlist.txt"
+local runtime_dir = fn.stdpath('data') .. '/site/pack/packer/start/' .. 'speedster.nvim'
+local filepath = runtime_dir .. "/lua/speedster/wordlist.txt"
 
 --test
 local f = assert(io.open(filepath,'r'))
@@ -270,9 +270,9 @@ local function input_field()
 	cmd('startinsert')
 end
 
-local function disable_plugins(buffer)
-	api.nvim_buf_set_var(buffer,'loaded_matchparen',1)
-end
+-- local function menu_formatter()
+-- 	print("Format time to align right")
+-- end
 
 M.run = function ()
 	local start_msg = {'Type "s" to start'}
@@ -280,7 +280,6 @@ M.run = function ()
 	get_data(start_msg)
 	input_field()
 	set_mappings()
-	disable_plugins(input_buf)
 end
 
 return M

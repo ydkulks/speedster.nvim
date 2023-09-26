@@ -8,4 +8,10 @@ describe("speedster",function ()
 	it("mapped 'q' to :close",function ()
 		vim.api.nvim_buf_get_keymap(0,'n')
 	end)
+	it("has access to file",function ()
+    local runtime_dir = vim.fn.stdpath('data') .. '/site/pack/packer/start/' .. 'speedster.nvim'
+    local filepath = runtime_dir .. "/lua/speedster/wordlist.txt"
+    local f = assert(io.open(filepath,'r'))
+    f:close()
+	end)
 end)
