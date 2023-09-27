@@ -1,9 +1,9 @@
--- TODO: Align time to right and clear menu's variable to not display time on open, when running twice in same buffer
 local api = vim.api
 local cmd = vim.cmd
 local fn = vim.fn
 local buf,input_buf
 local menu = ' g? - help'
+local time_diff = 'Time: 0.000000'
 local start_time,end_time
 table.unpack = table.unpack or unpack
 -- Refer this github issue for more info on above line
@@ -180,10 +180,17 @@ local function get_data(message)
     return centeredContents
 	end
 
+  local function menu_formatter()
+		local width = api.nvim_win_get_width(0)
+		local space_count = width - #menu - #time_diff - 1
+		local formatted = menu .. string.rep(' ',space_count) .. time_diff
+		return formatted
+  end
+
 	local title = {'Speedster'}
 	api.nvim_buf_set_lines(buf, 0, -1, false, {
 		table.unpack(center(title)),
-		menu,
+		menu_formatter(),
 		hr('─'),
 		'',
 		table.unpack(center(message))
@@ -253,8 +260,7 @@ local function input_field()
 			cmd(":q!")
 			cmd(":close")
 		elseif input == randomWords[1] then
-			local time_diff = calculate_time_diff()
-			menu = " g? - help" .. " Time: " .. time_diff
+			time_diff = "Time: " .. calculate_time_diff()
 			-- refresh memory
 			randomWords = {}
 			-- Generate random set of words to form a line
@@ -270,12 +276,10 @@ local function input_field()
 	cmd('startinsert')
 end
 
--- local function menu_formatter()
--- 	print("Format time to align right")
--- end
-
 M.run = function ()
 	local start_msg = {'Type "s" to start'}
+	-- Refreshing the timer
+  time_diff = 'Time: 0.000000'
 	open_window()
 	get_data(start_msg)
 	input_field()
