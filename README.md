@@ -44,6 +44,7 @@ Coming soon ...
 
 - Test compatibility with other plugin managers
 - Themes and Configuration
+- Config option to customize settings
 
 ## 🐛 Known Bugs & Limitation
 

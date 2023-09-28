@@ -15,6 +15,7 @@ Help commands to refer while building a plugin
 ```vim
 :Telescope help_tags
 :Telescope highlights
+:help lua-guide
 :help 'runtimepath'
 :help help-writing
 :help helptags

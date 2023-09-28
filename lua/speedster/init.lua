@@ -1,9 +1,12 @@
+-- TODO: add wpm calculation ((characters/5)/time = WPM)
 local api = vim.api
 local cmd = vim.cmd
 local fn = vim.fn
 local buf,input_buf
 local menu = ' g? - help'
 local time_diff = 'Time: 0.000000'
+local wpm = ' WPM: 0'
+local num_words = 50
 local start_time,end_time
 table.unpack = table.unpack or unpack
 -- Refer this github issue for more info on above line
@@ -89,7 +92,7 @@ local function generateRandomWords()
   math.randomseed(os.time())
   local words = {}
   local randomString = ""
-	local maxLength = 50
+	local maxLength = num_words
 
   while #randomString < maxLength do
     -- local randomIndex = math.random(1, #symbols)
@@ -182,8 +185,8 @@ local function get_data(message)
 
   local function menu_formatter()
 		local width = api.nvim_win_get_width(0)
-		local space_count = width - #menu - #time_diff - 1
-		local formatted = menu .. string.rep(' ',space_count) .. time_diff
+		local space_count = width - #menu - #time_diff - #wpm - 1
+		local formatted = menu .. string.rep(' ',space_count) .. time_diff .. wpm
 		return formatted
   end
 
@@ -260,7 +263,9 @@ local function input_field()
 			cmd(":q!")
 			cmd(":close")
 		elseif input == randomWords[1] then
-			time_diff = "Time: " .. calculate_time_diff()
+			time_diff = calculate_time_diff()
+			wpm = " WPM: " .. (num_words/5)/(time_diff/60)
+			time_diff = "Time: " .. time_diff
 			-- refresh memory
 			randomWords = {}
 			-- Generate random set of words to form a line
@@ -280,6 +285,7 @@ M.run = function ()
 	local start_msg = {'Type "s" to start'}
 	-- Refreshing the timer
   time_diff = 'Time: 0.000000'
+  wpm = ' WPM: 0'
 	open_window()
 	get_data(start_msg)
 	input_field()

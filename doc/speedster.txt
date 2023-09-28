@@ -6,10 +6,10 @@
 
 ==============================================================================
 
-								       *run()*
-|run()| runs the plugin.
+						  *require("speedster").run()*
+It simply runs the plugin.
 >
-  require("speedster").run()
+  :lua require("speedster").run()
 <
 Or, you can also use vim command in the command-mode
 >
