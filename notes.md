@@ -28,6 +28,7 @@ Help commands to refer while building a plugin
 :help nvim_get_option()
 :help prompt_setcallback()
 :help plenary-test
+:help vim.tbl_deep_extend
 ```
 
 ## Special files and folders

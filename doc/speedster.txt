@@ -1,12 +1,22 @@
-==============================================================================
+*speedster.txt*
+
 				SPEEDSTER.NVIM
+
 							      *speedster.nvim*
 
 |speedster.nvim| helps you to warm up, practice and improve your typing speed.
 
-==============================================================================
+				       Type |gO| to see the table of contents.
 
-						  *require("speedster").run()*
+==============================================================================
+TABLE OF CONTENT
+
+- RUN                                                        |speedster.run()|
+- SETUP                                                    |speedster.setup()|
+
+==============================================================================
+RUN
+							     *speedster.run()*
 It simply runs the plugin.
 >
   :lua require("speedster").run()
@@ -15,5 +25,17 @@ Or, you can also use vim command in the command-mode
 >
   :Speedster
 <
+==============================================================================
+SETUP
+							   *speedster.setup()*
+Configure the plugin by placing this snippet in your neovim config file
+>
+  :lua require("speedster").setup({...})
+<
+Parameters:
+• {...}  (table) Options that configures the functionality and the looks of
+         the plugin:
+    • "num_char"   : Number of characters to display in the buffer
+    • "symbols"    : Number of words to be replaced with symbols
 
  vim:tw=78:ts=8:ft=help:norl:

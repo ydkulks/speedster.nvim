@@ -1,2 +1,4 @@
-run()	speedster.txt	/*run()*
 speedster.nvim	speedster.txt	/*speedster.nvim*
+speedster.run()	speedster.txt	/*speedster.run()*
+speedster.setup()	speedster.txt	/*speedster.setup()*
+speedster.txt	speedster.txt	/*speedster.txt*

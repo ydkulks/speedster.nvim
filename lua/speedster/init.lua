@@ -1,4 +1,11 @@
--- TODO: add wpm calculation ((characters/5)/time = WPM)
+-- TODO: Themes
+-- Note: help: nvim_win_set_hl_ns()
+
+-- Get config from config.lua
+local config = require("lua.speedster.config")
+local num_char = config.config.num_char
+local num_symbols = config.config.symbols
+
 local api = vim.api
 local cmd = vim.cmd
 local fn = vim.fn
@@ -6,7 +13,6 @@ local buf,input_buf
 local menu = ' g? - help'
 local time_diff = 'Time: 0.000000'
 local wpm = ' WPM: 0'
-local num_words = 50
 local start_time,end_time
 table.unpack = table.unpack or unpack
 -- Refer this github issue for more info on above line
@@ -23,6 +29,7 @@ local M = {}
 local symbols = '12345678901234567890_+-=;:,./"?><[]{}'
 
 local function wordsWithSymbols(randomWord)
+	local modifiedString = ''
 	-- Extract the string from the table
   local inputString = randomWord
 
@@ -32,26 +39,28 @@ local function wordsWithSymbols(randomWord)
       table.insert(words, word)
   end
 
-  -- Select a random index for the word to be replaced
-  local randomIndex = math.random(1, #words)
+	for i=1, num_symbols do
+		-- Select a random index for the word to be replaced
+		local randomIndex = math.random(1, #words)
 
-  -- Get the selected word and its length
-  local selectedWord = words[randomIndex]
-  local wordLength = #selectedWord
+		-- Get the selected word and its length
+		local selectedWord = words[randomIndex]
+		local wordLength = #selectedWord
 
-  -- Generate a random symbol from the set for each character in the word
-  local symbolString = ''
-  for i = 1, wordLength do
-    local randomSymbolIndex = math.random(1, #symbols)
-    local randomSymbol = symbols:sub(randomSymbolIndex, randomSymbolIndex)
-    symbolString = symbolString .. randomSymbol
-  end
+		-- Generate a random symbol from the set for each character in the word
+		local symbolString = ''
+		for i = 1, wordLength do
+			local randomSymbolIndex = math.random(1, #symbols)
+			local randomSymbol = symbols:sub(randomSymbolIndex, randomSymbolIndex)
+			symbolString = symbolString .. randomSymbol
+		end
 
-  -- Replace the selected word with the generated symbols
-  words[randomIndex] = symbolString
+		-- Replace the selected word with the generated symbols
+		words[randomIndex] = symbolString
 
-  -- Reconstruct the modified string
-  local modifiedString = table.concat(words, ' ')
+		-- Reconstruct the modified string
+		modifiedString = table.concat(words, ' ')
+	end
 	return modifiedString
 end
 
@@ -92,7 +101,7 @@ local function generateRandomWords()
   math.randomseed(os.time())
   local words = {}
   local randomString = ""
-	local maxLength = num_words
+	local maxLength = num_char
 
   while #randomString < maxLength do
     -- local randomIndex = math.random(1, #symbols)
@@ -264,7 +273,7 @@ local function input_field()
 			cmd(":close")
 		elseif input == randomWords[1] then
 			time_diff = calculate_time_diff()
-			wpm = " WPM: " .. (num_words/5)/(time_diff/60)
+			wpm = " WPM: " .. (num_char/5)/(time_diff/60)
 			time_diff = "Time: " .. time_diff
 			-- refresh memory
 			randomWords = {}

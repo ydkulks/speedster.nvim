@@ -38,13 +38,18 @@ use {'ydkulks/speedster.nvim'}
 
 ## ⚙️ Configuration
 
-Coming soon ...
+```lua
+require("speedster").setup({
+    -- Default values
+    num_char = 50,     -- Number of characters displayed
+    symbols = 1        -- Number of words replaced with symbols
+})
+```
 
 ## 📄 TODO
 
 - Test compatibility with other plugin managers
-- Themes and Configuration
-- Config option to customize settings
+- Themes
 
 ## 🐛 Known Bugs & Limitation
 
