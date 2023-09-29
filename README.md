@@ -11,7 +11,11 @@ Plugin to warm-up and practice typing skill and speed
 
 ### Usage
 
+<div align="center">
+
 ![SpeedsterDemo](images/speedsterDemo.gif)
+
+</div>
 
 ### 📌 Layout
 
@@ -20,7 +24,11 @@ Plugin to warm-up and practice typing skill and speed
 - Display in the middle
 - Prompt at the bottom
 
+<div align="center">
+
 ![SpeedsterLayout](images/speedster_main.png)
+
+</div>
 
 ## ⬇️ Installation
 

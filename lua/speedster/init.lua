@@ -2,7 +2,7 @@
 -- Note: help: nvim_win_set_hl_ns()
 
 -- Get config from config.lua
-local config = require("lua.speedster.config")
+local config = require("speedster.config")
 local num_char = config.config.num_char
 local num_symbols = config.config.symbols
 
