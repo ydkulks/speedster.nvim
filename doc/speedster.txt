@@ -9,33 +9,67 @@
 				       Type |gO| to see the table of contents.
 
 ==============================================================================
-TABLE OF CONTENT
+1. TABLE OF CONTENT
 
 - RUN                                                        |speedster.run()|
 - SETUP                                                    |speedster.setup()|
+- CONFIG GUIDE                                              |speedster_config| 
 
 ==============================================================================
-RUN
+2. RUN
 							     *speedster.run()*
-It simply runs the plugin.
->
+
+It simply runs the plugin. >vim
   :lua require("speedster").run()
 <
-Or, you can also use vim command in the command-mode
->
+Or, you can also use vim command in the command-mode >vim
   :Speedster
 <
 ==============================================================================
-SETUP
+3. SETUP
 							   *speedster.setup()*
-Configure the plugin by placing this snippet in your neovim config file
->
+
+Configure the plugin by placing this snippet in your neovim config file >vim
   :lua require("speedster").setup({...})
+<
+==============================================================================
+4. CONFIG GUIDE
+							    *speedster_config*
+
+Add this in your lua config file (or in ~/.config/nvim/init.lua)
+Default configuration: >lua
+  require("speedster").setup({
+      -- Default values
+      num_char = 50,
+      symbols = 1,
+      dark_theme = {
+	Title = 'guifg=LightGrey ctermfg=7',
+	Text = 'guifg=#afafaf ctermfg=145',
+	Hr = 'guifg=LightGrey ctermfg=7',
+	Border = 'guifg=LightGrey ctermfg=7'
+      },
+      light_theme = {
+	Title = 'guifg=#000000 ctermfg=16',
+	Text = 'guifg=#000000 ctermfg=16',
+	Hr = 'guifg=#000000 ctermfg=16',
+	Border = 'guifg=#3b4048 ctermfg=238'
+      }
+    })
 <
 Parameters:
 • {...}  (table) Options that configures the functionality and the looks of
          the plugin:
     • "num_char"   : Number of characters to display in the buffer
     • "symbols"    : Number of words to be replaced with symbols
+    • "dark_theme" : (table) Table for dark theme
+      - "Title"    : (string) guifg={value} ctermfg={value}
+      - "Text"     : (string) guifg={value} ctermfg={value}
+      - "Hr"       : (string) guifg={value} ctermfg={value}
+      - "Border"   : (string) guifg={value} ctermfg={value}
+    • "light_theme" : (table) Table for light theme
+      - "Title"    : (string) guifg={value} ctermfg={value}
+      - "Text"     : (string) guifg={value} ctermfg={value}
+      - "Hr"       : (string) guifg={value} ctermfg={value}
+      - "Border"   : (string) guifg={value} ctermfg={value}
 
  vim:tw=78:ts=8:ft=help:norl:

@@ -3,6 +3,7 @@
 
 -- Get config from config.lua
 local config = require("speedster.config")
+require("speedster.theme")
 local num_char = config.config.num_char
 local num_symbols = config.config.symbols
 
@@ -161,7 +162,17 @@ local function open_window()
   -- set some options
   local opts = {
     style = "minimal",
-	  border = "rounded",
+	  -- border = "rounded",
+		border = {
+        {"╭", "SpeedsterBorder"},
+				{"─", "SpeedsterBorder"},  -- Use the "MyPopupBorder" highlighting group for the border
+        {"╮", "SpeedsterBorder"},  -- Right U
+        {"│", "SpeedsterBorder"},  -- Right M
+        {"╯", "SpeedsterBorder"},  -- Right D
+        {"─", "SpeedsterBorder"},
+        {"╰", "SpeedsterBorder"},  -- Bottom L
+        {"│", "SpeedsterBorder"},
+    },
     relative = "win",
     width = win_width,
     height = win_height,
@@ -199,6 +210,12 @@ local function get_data(message)
 		return formatted
   end
 
+	-- Add extra new lines to prevent color change in different colorschemes
+	local newLines = {'','','','',''}
+	for _, item in ipairs(newLines) do
+		table.insert(message, item)
+	end
+
 	local title = {'Speedster'}
 	api.nvim_buf_set_lines(buf, 0, -1, false, {
 		table.unpack(center(title)),
@@ -207,15 +224,20 @@ local function get_data(message)
 		'',
 		table.unpack(center(message))
 	})
-	-- Highlighting lines
-	api.nvim_buf_add_highlight(buf,-1,'Keyword',0,0,-1)
-	api.nvim_buf_add_highlight(buf,-1,'Comment',2,0,-1)
 
-	api.nvim_buf_add_highlight(buf,-1,'Function',4,0,-1)
-	api.nvim_buf_add_highlight(buf,-1,'Function',5,0,-1)
-	api.nvim_buf_add_highlight(buf,-1,'Function',6,0,-1)
-	api.nvim_buf_add_highlight(buf,-1,'Function',7,0,-1)
-	api.nvim_buf_add_highlight(buf,-1,'Function',8,0,-1)
+	for i = 0, 8 do
+		if i~=3 then
+			if i>3 then
+				api.nvim_buf_add_highlight(buf,-1,'SpeedsterText',i,0,-1)
+			elseif i==0 then
+				api.nvim_buf_add_highlight(buf,-1,'SpeedsterTitle',i,0,-1)
+			else
+				api.nvim_buf_add_highlight(buf,-1,'SpeedsterHr',i,0,-1)
+			end
+		end
+	end
+	-- Background color of the buffer
+	cmd("set winhighlight=Normal:SpeedsterBg")
 end
 
 local function input_field()
@@ -238,7 +260,17 @@ local function input_field()
   local win_width = math.ceil(width * 0.8)
 	local input_win_opts = {
 		style = "minimal",
-	  border = "rounded",
+	  -- border = "rounded",
+		border = {
+        {"╭", "SpeedsterBorder"},
+				{"─", "SpeedsterBorder"},  -- Use the "MyPopupBorder" highlighting group for the border
+        {"╮", "SpeedsterBorder"},  -- Right U
+        {"│", "SpeedsterBorder"},  -- Right M
+        {"╯", "SpeedsterBorder"},  -- Right D
+        {"─", "SpeedsterBorder"},
+        {"╰", "SpeedsterBorder"},  -- Bottom L
+        {"│", "SpeedsterBorder"},
+    },
 		relative = "editor",
 		width = win_width,
 		height = 1,
@@ -299,6 +331,28 @@ M.run = function ()
 	get_data(start_msg)
 	input_field()
 	set_mappings()
+--[[
+	-- Highlighting lines
+	if vim.o.background == "dark" then
+		-- Dark
+		-- cmd("highlight link SpeedsterBg EndOfBuffer")
+		cmd("highlight SpeedsterText guifg=#afafaf ctermfg=145")
+		cmd("highlight SpeedsterTitle guifg=LightGrey ctermfg=7")
+		cmd("highlight SpeedsterHr guifg=LightGrey ctermfg=7")
+		cmd("highlight SpeedsterBorder guifg=LightGrey ctermfg=7")
+		-- cmd("highlight SpeedsterBg guifg=NONE ctermfg=NONE")
+	elseif vim.o.background == "light" then
+		-- Light
+		-- cmd("highlight link SpeedsterBg EndOfBuffer")
+		cmd("highlight SpeedsterText guifg=#000000 ctermfg=16")
+		cmd("highlight SpeedsterTitle guifg=#000000 ctermfg=16")
+		cmd("highlight SpeedsterHr guifg=#000000 ctermfg=16")
+		cmd("highlight SpeedsterBorder guifg=#3b4048 ctermfg=238")
+		-- cmd("highlight SpeedsterBg guifg=NONE ctermfg=NONE")
+	else
+		print("Unknown colorscheme")
+	end
+]]
 end
 
 return M

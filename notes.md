@@ -29,6 +29,7 @@ Help commands to refer while building a plugin
 :help prompt_setcallback()
 :help plenary-test
 :help vim.tbl_deep_extend
+:help winhl
 ```
 
 ## Special files and folders
