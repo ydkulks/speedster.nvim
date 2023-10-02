@@ -13,7 +13,7 @@ Plugin to warm-up and practice typing skill and speed
 
 <div align="center">
 
-![SpeedsterDemo](images/speedsterDemo.gif)
+![SpeedsterDemo](images/Demo.gif)
 
 </div>
 
@@ -26,7 +26,25 @@ Plugin to warm-up and practice typing skill and speed
 
 <div align="center">
 
-![SpeedsterLayout](images/speedster_main.png)
+![SpeedsterLayout](images/Layout.png)
+
+</div>
+
+### Themes
+
+Dark Mode
+
+<div align="center">
+
+![SpeedsterDarkTheme](images/DarkMode.png)
+
+</div>
+
+Light Mode
+
+<div align="center">
+
+![SpeedsterLightTheme](images/LightMode.png)
 
 </div>
 
@@ -71,8 +89,10 @@ require("speedster").setup({
 
 ## 📄 TODO
 
-- Test compatibility with other plugin managers
-- Themes
+- [x] Themes
+- [x] Config option to customize settings
+- [ ] Test compatibility with other plugin managers
+- [ ] Resize buffer automatically
 
 ## 🐛 Known Bugs & Limitation
 

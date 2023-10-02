@@ -1,5 +1,4 @@
--- TODO: Themes
--- Note: help: nvim_win_set_hl_ns()
+-- TODO: Test with other plugin managers
 
 -- Get config from config.lua
 local config = require("speedster.config")
