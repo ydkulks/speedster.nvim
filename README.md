@@ -30,7 +30,7 @@ Plugin to warm-up and practice typing skill and speed
 
 </div>
 
-### Themes
+### 🎨 Themes
 
 Dark Mode
 
@@ -50,10 +50,42 @@ Light Mode
 
 ## ⬇️ Installation
 
-Using [Packer](https://github.com/wbthomason/packer.nvim.git)
+### [vim-plug](https://github.com/junegunn/vim-plug)
 
 ```lua
-use {'ydkulks/speedster.nvim'}
+-- Yet to be tested
+```
+
+### [packer.nvim](https://github.com/wbthomason/packer.nvim.git)
+
+```lua
+use {
+  'ydkulks/speedster.nvim',
+  config=function()
+    local config = require('speedster.nvim')
+    config.setup({
+      num_char = 80,
+      symbols = 2,
+      dark_theme = {
+        Title = 'guifg=LightGrey ctermfg=7',
+        Text = 'guifg=#afafaf ctermfg=145',
+        Hr = 'guifg=LightGrey ctermfg=7',
+        Border = 'guifg=LightGrey ctermfg=7'
+      },
+    })
+  }
+```
+
+### [dein.nvim](https://github.com/Shougo/dein.vim)
+
+```lua
+-- Yet to be tested
+```
+
+### [lazy.nvim](https://github.com/folke/lazy.nvim)
+
+```lua
+-- Yet to be tested
 ```
 
 ## 🆘 Help

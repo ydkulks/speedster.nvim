@@ -164,12 +164,12 @@ local function open_window()
 	  -- border = "rounded",
 		border = {
         {"╭", "SpeedsterBorder"},
-				{"─", "SpeedsterBorder"},  -- Use the "MyPopupBorder" highlighting group for the border
-        {"╮", "SpeedsterBorder"},  -- Right U
-        {"│", "SpeedsterBorder"},  -- Right M
-        {"╯", "SpeedsterBorder"},  -- Right D
+				{"─", "SpeedsterBorder"},
+        {"╮", "SpeedsterBorder"},
+        {"│", "SpeedsterBorder"},
+        {"╯", "SpeedsterBorder"},
         {"─", "SpeedsterBorder"},
-        {"╰", "SpeedsterBorder"},  -- Bottom L
+        {"╰", "SpeedsterBorder"},
         {"│", "SpeedsterBorder"},
     },
     relative = "win",
@@ -262,12 +262,12 @@ local function input_field()
 	  -- border = "rounded",
 		border = {
         {"╭", "SpeedsterBorder"},
-				{"─", "SpeedsterBorder"},  -- Use the "MyPopupBorder" highlighting group for the border
-        {"╮", "SpeedsterBorder"},  -- Right U
-        {"│", "SpeedsterBorder"},  -- Right M
-        {"╯", "SpeedsterBorder"},  -- Right D
+				{"─", "SpeedsterBorder"},
+        {"╮", "SpeedsterBorder"},
+        {"│", "SpeedsterBorder"},
+        {"╯", "SpeedsterBorder"},
         {"─", "SpeedsterBorder"},
-        {"╰", "SpeedsterBorder"},  -- Bottom L
+        {"╰", "SpeedsterBorder"},
         {"│", "SpeedsterBorder"},
     },
 		relative = "editor",
@@ -316,7 +316,6 @@ local function input_field()
 			return get_data(randomWords)
 		end
 	end)
-	-- fn.prompt_setprompt(input_buf,"》")
 	fn.prompt_setprompt(input_buf," ▶ ")
 	cmd('startinsert')
 end
@@ -330,28 +329,6 @@ M.run = function ()
 	get_data(start_msg)
 	input_field()
 	set_mappings()
---[[
-	-- Highlighting lines
-	if vim.o.background == "dark" then
-		-- Dark
-		-- cmd("highlight link SpeedsterBg EndOfBuffer")
-		cmd("highlight SpeedsterText guifg=#afafaf ctermfg=145")
-		cmd("highlight SpeedsterTitle guifg=LightGrey ctermfg=7")
-		cmd("highlight SpeedsterHr guifg=LightGrey ctermfg=7")
-		cmd("highlight SpeedsterBorder guifg=LightGrey ctermfg=7")
-		-- cmd("highlight SpeedsterBg guifg=NONE ctermfg=NONE")
-	elseif vim.o.background == "light" then
-		-- Light
-		-- cmd("highlight link SpeedsterBg EndOfBuffer")
-		cmd("highlight SpeedsterText guifg=#000000 ctermfg=16")
-		cmd("highlight SpeedsterTitle guifg=#000000 ctermfg=16")
-		cmd("highlight SpeedsterHr guifg=#000000 ctermfg=16")
-		cmd("highlight SpeedsterBorder guifg=#3b4048 ctermfg=238")
-		-- cmd("highlight SpeedsterBg guifg=NONE ctermfg=NONE")
-	else
-		print("Unknown colorscheme")
-	end
-]]
 end
 
 return M
