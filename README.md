@@ -53,7 +53,7 @@ Light Mode
 ### [vim-plug](https://github.com/junegunn/vim-plug)
 
 ```lua
--- Yet to be tested
+Plug 'ydkulks/speedster.nvim'
 ```
 
 ### [packer.nvim](https://github.com/wbthomason/packer.nvim.git)
@@ -76,16 +76,11 @@ use {
   }
 ```
 
-### [dein.nvim](https://github.com/Shougo/dein.vim)
-
-```lua
--- Yet to be tested
-```
-
 ### [lazy.nvim](https://github.com/folke/lazy.nvim)
 
 ```lua
--- Yet to be tested
+-- Lazy.nvim uses vim-plug.
+-- Follow vim-plug config instruction above
 ```
 
 ## 🆘 Help
@@ -123,7 +118,7 @@ require("speedster").setup({
 
 - [x] Themes
 - [x] Config option to customize settings
-- [ ] Test compatibility with other plugin managers
+- [x] Test compatibility with other plugin managers
 - [ ] Resize buffer automatically
 
 ## 🐛 Known Bugs & Limitation

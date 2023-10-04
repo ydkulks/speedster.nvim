@@ -1,5 +1,3 @@
--- TODO: Test with other plugin managers
-
 -- Get config from config.lua
 local config = require("speedster.config")
 require("speedster.theme")
@@ -17,8 +15,18 @@ local start_time,end_time
 table.unpack = table.unpack or unpack
 -- Refer this github issue for more info on above line
 -- https://github.com/hrsh7th/nvim-cmp/issues/1017#issuecomment-1141440976
-local runtime_dir = fn.stdpath('data') .. '/site/pack/packer/start/' .. 'speedster.nvim'
-local filepath = runtime_dir .. "/lua/speedster/wordlist.txt"
+
+-- Path based on plugin installed
+local filepath
+local packer_nvim = fn.stdpath('config') .. '/plugin/packer_compiled.lua'
+local vim_plug = fn.stdpath('config') .. '/plugged'
+if fn.filereadable(packer_nvim) == 1 then
+	local runtime_dir = fn.stdpath('data') .. '/site/pack/packer/start/' .. 'speedster.nvim'
+	filepath = runtime_dir .. "/lua/speedster/wordlist.txt"
+elseif fn.filereadable(vim_plug) == 1 then
+	local runtime_dir = fn.stdpath('data') .. '/plugged/' .. 'speedster.nvim'
+	filepath = runtime_dir .. "/lua/speedster/wordlist.txt"
+end
 
 --test
 local f = assert(io.open(filepath,'r'))
