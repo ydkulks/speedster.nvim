@@ -119,7 +119,7 @@ require("speedster").setup({
 - [x] Themes
 - [x] Config option to customize settings
 - [x] Test compatibility with other plugin managers
-- [ ] Resize buffer automatically
+<!-- - [ ] Resize buffer automatically -->
 
 ## 🐛 Known Bugs & Limitation
 

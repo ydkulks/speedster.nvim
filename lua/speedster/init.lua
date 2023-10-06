@@ -331,8 +331,8 @@ end
 M.run = function ()
 	local start_msg = {'Type "s" to start'}
 	-- Refreshing the timer
-  time_diff = 'Time: 0.000000'
-  wpm = ' WPM: 0'
+	time_diff = 'Time: 0.000000'
+	wpm = ' WPM: 0'
 	open_window()
 	get_data(start_msg)
 	input_field()
