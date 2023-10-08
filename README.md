@@ -62,7 +62,7 @@ Plug 'ydkulks/speedster.nvim'
 use {
   'ydkulks/speedster.nvim',
   config=function()
-    local config = require('speedster.nvim')
+    local config = require('speedster.config')
     config.setup({
       num_char = 80,
       symbols = 2,
@@ -95,7 +95,7 @@ Refer `:help speedster_config` help docs for updated guide on configuration
 
 ```lua
 -- init.lua
-require("speedster").setup({
+require("speedster.config").setup({
     -- Default values
     num_char = 50,     -- Number of characters displayed
     symbols = 1,       -- Number of words replaced with symbols
